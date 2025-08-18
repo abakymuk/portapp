@@ -1,0 +1,40 @@
+{
+  "name": "portops",
+  "version": "1.0.0",
+  "description": "PortOps MVP - система управления портовыми операциями",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -C apps/web dev",
+    "build": "pnpm -C apps/web build",
+    "start": "pnpm -C apps/web start",
+    "lint": "pnpm -C apps/web lint",
+    "db:studio": "open http://127.0.0.1:54323",
+    "sb:start": "supabase start",
+    "sb:stop": "supabase stop",
+    "sb:status": "supabase status",
+    "sb:reset": "supabase db reset",
+    "sb:push": "supabase db push",
+    "sb:functions:serve": "supabase functions serve",
+    "sb:functions:deploy": "supabase functions deploy",
+    "vercel:deploy": "pnpm -C apps/web vercel --prod",
+    "vercel:logs": "pnpm -C apps/web vercel logs --follow"
+  },
+  "keywords": [
+    "portops",
+    "logistics",
+    "shipping",
+    "containers",
+    "nextjs",
+    "supabase"
+  ],
+  "author": "PortOps Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
