@@ -1,6 +1,6 @@
 # DB-001 · Core schema
 
-**Статус**: ⏳ Ожидает  
+**Статус**: ✅ Завершён  
 **Milestone**: B  
 **Приоритет**: Высокий  
 **EPIC**: DB - База данных
@@ -11,21 +11,21 @@
 
 ## Задачи
 
-- [ ] Создать таблицы справочников: `shipping_lines`, `terminals`
-- [ ] Создать таблицы raw/staging: `raw_arrivals`, `stg_voyages`, `stg_containers`
-- [ ] Создать core таблицы: `voyages`, `containers`, `container_events`
-- [ ] Создать таблицы заказов: `orgs`, `orders`, `order_items`
-- [ ] Добавить индексы для производительности
-- [ ] Создать foreign key связи
-- [ ] Добавить check constraints
+- [x] Создать таблицы справочников: `shipping_lines`, `terminals`
+- [x] Создать таблицы raw/staging: `raw_arrivals`, `stg_voyages`, `stg_containers`
+- [x] Создать core таблицы: `voyages`, `containers`, `container_events`
+- [x] Создать таблицы заказов: `orgs`, `orders`, `order_items`
+- [x] Добавить индексы для производительности
+- [x] Создать foreign key связи
+- [x] Добавить check constraints
 
 ## Критерии приёмки
 
-- [ ] Все таблицы созданы в Supabase
-- [ ] Индексы на месте (проверить через `\d+`)
-- [ ] Связи между таблицами работают корректно
-- [ ] Check constraints применяются
-- [ ] Схема соответствует документации в `docs/DATABASE.md`
+- [x] Все таблицы созданы в Supabase
+- [x] Индексы на месте (проверить через `\d+`)
+- [x] Связи между таблицами работают корректно
+- [x] Check constraints применяются
+- [x] Схема соответствует документации в `docs/DATABASE.md`
 
 ## Технические детали
 
@@ -224,3 +224,59 @@ WHERE tc.constraint_type = 'FOREIGN KEY';
 - Проверить все foreign key связи
 - Убедиться, что check constraints работают
 - Создать индексы для часто используемых полей
+
+## Результаты выполнения
+
+✅ **Тикет успешно завершён!**
+
+### Выполненные действия:
+1. **Миграция создана**: `supabase/migrations/20240818_001_core_schema.sql`
+2. **Локальная база**: Схема применена через `supabase db reset`
+3. **Облачная база**: Схема применена через `supabase db push`
+4. **Тестовые данные**: Добавлены для проверки связей
+
+### Созданные таблицы (12):
+- **Справочники**: `shipping_lines`, `terminals`, `code_mappings`
+- **Raw/Staging**: `raw_arrivals`, `stg_voyages`, `stg_containers`
+- **Core**: `voyages`, `containers`, `container_events`
+- **Многотенантность**: `orgs`, `orders`, `order_items`
+
+### Созданные индексы (39):
+- **Primary keys**: 12 индексов
+- **Unique constraints**: 6 индексов
+- **Performance indexes**: 21 индекс для оптимизации запросов
+
+### Foreign key связи (7):
+- `voyages.line_id` → `shipping_lines.id`
+- `voyages.terminal_id` → `terminals.id`
+- `containers.voyage_id` → `voyages.id`
+- `container_events.container_id` → `containers.id`
+- `orders.org_id` → `orgs.id`
+- `order_items.order_id` → `orders.id`
+- `order_items.container_id` → `containers.id`
+
+### Check constraints (6):
+- `voyages.status`: scheduled, arrived, departed, canceled
+- `containers.last_known_status`: in_transit, discharged, available, picked_up, hold
+- `container_events.event_type`: discharged, available, picked_up, hold, release
+- `orders.status`: draft, submitted, in_process, completed, canceled
+- `order_items.service_type`: pickup, drayage, yard_move, storage
+- `order_items.status`: planned, ready, done, failed
+
+### Проверки:
+- ✅ Все таблицы созданы в локальной и облачной базе
+- ✅ Все индексы созданы (39 индексов)
+- ✅ Все foreign key связи работают корректно
+- ✅ Все check constraints применяются
+- ✅ Тестовые данные успешно добавлены
+- ✅ JOIN запросы работают корректно
+
+### Тестовые данные:
+- **Shipping Line**: MSCU (Mediterranean Shipping Company)
+- **Terminal**: LAX (Los Angeles Terminal)
+- **Voyage**: MSC001 (EVER GIVEN vessel)
+
+### Следующие шаги:
+- 🎯 Перейти к тикету **DB-002** - Materialized views + RPC
+- 🎯 Перейти к тикету **DB-003** - RLS policies
+- 🎯 Перейти к тикету **DB-004** - Seeds
