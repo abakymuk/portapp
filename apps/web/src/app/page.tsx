@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { EnvTest } from "@/components/env-test";
 
 export default function Home() {
   return (
@@ -73,6 +74,10 @@ export default function Home() {
             ✅ Next.js 15 приложение успешно настроено с TypeScript, Tailwind
             CSS и shadcn/ui
           </p>
+        </div>
+
+        <div className="mt-8">
+          <EnvTest />
         </div>
       </div>
     </div>
