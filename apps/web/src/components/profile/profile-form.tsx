@@ -9,6 +9,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Upload } from "lucide-react";
 import { updateProfile } from "@/actions/profile";
+import { uploadAvatar } from "@/actions/upload";
 
 export function ProfileForm() {
   const { user, profile } = useClerkUser();
@@ -57,8 +58,20 @@ export function ProfileForm() {
     setError(null);
 
     try {
-      // TODO: Реализовать загрузку аватара
-      console.log("Upload avatar:", file);
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      const result = await uploadAvatar(formData);
+
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setSuccess("Аватар успешно загружен");
+        // Обновляем профиль в локальном состоянии
+        if (profile && result.url) {
+          profile.avatar_url = result.url;
+        }
+      }
     } catch (err) {
       setError("Ошибка при загрузке аватара");
     } finally {

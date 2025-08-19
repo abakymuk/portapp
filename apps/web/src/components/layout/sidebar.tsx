@@ -11,6 +11,7 @@ import {
   Package,
   ShoppingCart,
   User,
+  Settings,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -41,6 +42,11 @@ const navigation = [
     title: "Профиль",
     href: "/profile",
     icon: User,
+  },
+  {
+    title: "Настройки",
+    href: "/settings",
+    icon: Settings,
   },
 ];
 
