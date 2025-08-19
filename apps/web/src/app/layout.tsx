@@ -3,9 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { clientEnv, serverEnv } from "@/lib/env";
 import { Sidebar } from "@/components/layout/sidebar";
-import { SidebarToggle } from "@/components/layout/sidebar-toggle";
 import { SidebarProvider } from "@/components/layout/sidebar-provider";
-import { UserMenu } from "@/components/layout/user-menu";
+import { Header } from "@/components/layout/header";
+import { ClerkProvider } from "@clerk/nextjs";
+import { ruRU } from "@clerk/localizations";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,27 +39,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SidebarProvider>
-          <div className="flex h-screen">
-            <Sidebar />
-            <div className="flex flex-1 flex-col">
-              {/* Header */}
-              <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
-                <SidebarToggle />
-                <div className="flex-1" />
-                <UserMenu />
-              </header>
-
-              {/* Main content */}
-              <main className="flex-1 overflow-auto">{children}</main>
+    <ClerkProvider localization={ruRU}>
+      <html lang="ru">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <SidebarProvider>
+            <div className="flex h-screen">
+              <Sidebar />
+              <div className="flex flex-1 flex-col">
+                <Header />
+                {/* Main content */}
+                <main className="flex-1 overflow-auto">{children}</main>
+              </div>
             </div>
-          </div>
-        </SidebarProvider>
-      </body>
-    </html>
+          </SidebarProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

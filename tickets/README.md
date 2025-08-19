@@ -55,7 +55,7 @@ tickets/
 
 ## Созданные тикеты
 
-### ✅ Завершённые (16/18)
+### ✅ Завершённые (17/18)
 - **ENV-001** - Bootstrap repo
 - **ENV-002** - Next 15 app
 - **ENV-003** - Supabase setup
@@ -71,9 +71,7 @@ tickets/
 - **UI-004** - Containers search
 - **UI-005** - Orders list/new/detail
 - **UI-006** - Sidebar Navigation
-
-### 🔄 В процессе (1/18)
-- **UI-007** - User authentication (Clerk) ⚡
+- **UI-007** - User authentication (Clerk)
 
 ### ⏳ В ожидании (1/18)
 - **UI-008** - User profile management
