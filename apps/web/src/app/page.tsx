@@ -21,15 +21,7 @@ function DashboardHeader() {
           </p>
         </div>
         <div className="flex space-x-2">
-          <Button asChild variant="outline">
-            <Link href="/arrivals">Все рейсы</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/containers">Поиск контейнеров</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/orders">Заказы</Link>
-          </Button>
+          {/* Кнопки навигации теперь в sidebar */}
         </div>
       </div>
     </div>
@@ -109,7 +101,7 @@ function DwellCard() {
 
 export default async function DashboardPage() {
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="p-8 space-y-8">
       <DashboardHeader />
       <KPISection />
 

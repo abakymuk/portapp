@@ -46,7 +46,7 @@ export default async function ContainerPage({ params }: ContainerPageProps) {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="p-8 space-y-8">
       {/* Заголовок */}
       <div className="flex items-center space-x-4">
         <Button asChild variant="outline" size="sm">

@@ -27,7 +27,8 @@ tickets/
 │   ├── UI-002-dashboard.md
 │   ├── UI-003-arrivals.md
 │   ├── UI-004-containers-search.md
-│   └── UI-005-orders.md
+│   ├── UI-005-orders.md
+│   └── UI-006-sidebar.md
 ├── epic-actions/                # Server Actions
 │   ├── ACT-001-create-order.md
 │   └── ACT-002-add-order-items.md
@@ -50,7 +51,7 @@ tickets/
 
 ## Созданные тикеты
 
-### ✅ Завершённые (29/29)
+### ✅ Завершённые (30/30)
 - **ENV-001** - Bootstrap repo (🚧 В работе)
 - **ENV-002** - Next 15 app
 - **ENV-003** - Supabase setup
@@ -64,6 +65,7 @@ tickets/
 - **UI-003** - Arrivals list & details
 - **UI-004** - Containers search
 - **UI-005** - Orders list/new/detail
+- **UI-006** - Sidebar Navigation
 - **ING-001** - Edge function
 - **ING-002** - Normalize → stg
 - **ING-003** - Upsert core
@@ -81,7 +83,7 @@ tickets/
 - **DOC-002** - Operations (✅ уже создан)
 - **DOC-003** - Ingest docs (✅ уже создан)
 
-### 🎉 Все тикеты созданы!
+### 🎉 Все тикеты созданы! (30/30)
 
 ## Статусы тикетов
 

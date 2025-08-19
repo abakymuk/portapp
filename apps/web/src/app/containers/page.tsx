@@ -14,7 +14,7 @@ export default async function ContainersPage({
   searchParams: SearchParams;
 }) {
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="p-8 space-y-8">
       <div className="flex flex-col space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">Поиск контейнеров</h1>
         <p className="text-muted-foreground">
