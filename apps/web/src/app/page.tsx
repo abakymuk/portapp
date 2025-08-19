@@ -27,6 +27,9 @@ function DashboardHeader() {
           <Button asChild variant="outline">
             <Link href="/containers">Поиск контейнеров</Link>
           </Button>
+          <Button asChild variant="outline">
+            <Link href="/orders">Заказы</Link>
+          </Button>
         </div>
       </div>
     </div>
