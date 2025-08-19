@@ -123,9 +123,10 @@ export interface Database {
           org_id: string | null
           created_by: string | null
           order_no: string
-          status: 'draft' | 'submitted' | 'in_process' | 'completed' | 'canceled'
-          requested_pickup_at: string | null
-          note: string | null
+          status: 'draft' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled'
+          customer_name: string | null
+          customer_email: string | null
+          notes: string | null
           created_at: string
         }
         Insert: {
@@ -133,9 +134,10 @@ export interface Database {
           org_id?: string | null
           created_by?: string | null
           order_no: string
-          status?: 'draft' | 'submitted' | 'in_process' | 'completed' | 'canceled'
-          requested_pickup_at?: string | null
-          note?: string | null
+          status?: 'draft' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled'
+          customer_name?: string | null
+          customer_email?: string | null
+          notes?: string | null
           created_at?: string
         }
         Update: {
@@ -143,9 +145,10 @@ export interface Database {
           org_id?: string | null
           created_by?: string | null
           order_no?: string
-          status?: 'draft' | 'submitted' | 'in_process' | 'completed' | 'canceled'
-          requested_pickup_at?: string | null
-          note?: string | null
+          status?: 'draft' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled'
+          customer_name?: string | null
+          customer_email?: string | null
+          notes?: string | null
           created_at?: string
         }
       }
@@ -153,31 +156,28 @@ export interface Database {
         Row: {
           id: string
           order_id: string | null
-          cntr_no: string
-          container_id: string | null
-          bill_of_lading: string | null
-          service_type: 'pickup' | 'drayage' | 'yard_move' | 'storage'
-          status: 'planned' | 'ready' | 'done' | 'failed'
+          product_name: string | null
+          quantity: number | null
+          unit_price: number | null
+          total_price: number | null
           created_at: string
         }
         Insert: {
           id?: string
           order_id?: string | null
-          cntr_no: string
-          container_id?: string | null
-          bill_of_lading?: string | null
-          service_type?: 'pickup' | 'drayage' | 'yard_move' | 'storage'
-          status?: 'planned' | 'ready' | 'done' | 'failed'
+          product_name?: string | null
+          quantity?: number | null
+          unit_price?: number | null
+          total_price?: number | null
           created_at?: string
         }
         Update: {
           id?: string
           order_id?: string | null
-          cntr_no?: string
-          container_id?: string | null
-          bill_of_lading?: string | null
-          service_type?: 'pickup' | 'drayage' | 'yard_move' | 'storage'
-          status?: 'planned' | 'ready' | 'done' | 'failed'
+          product_name?: string | null
+          quantity?: number | null
+          unit_price?: number | null
+          total_price?: number | null
           created_at?: string
         }
       }
@@ -193,6 +193,102 @@ export interface Database {
         Update: {
           id?: string
           name?: string
+        }
+      }
+      user_profiles: {
+        Row: {
+          id: string
+          first_name: string | null
+          last_name: string | null
+          phone: string | null
+          position: string | null
+          avatar_url: string | null
+          timezone: string
+          language: string
+          is_active: boolean
+          last_login_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          first_name?: string | null
+          last_name?: string | null
+          phone?: string | null
+          position?: string | null
+          avatar_url?: string | null
+          timezone?: string
+          language?: string
+          is_active?: boolean
+          last_login_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          first_name?: string | null
+          last_name?: string | null
+          phone?: string | null
+          position?: string | null
+          avatar_url?: string | null
+          timezone?: string
+          language?: string
+          is_active?: boolean
+          last_login_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      user_roles: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          permissions: any
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          permissions?: any
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          permissions?: any
+          created_at?: string
+        }
+      }
+      user_org_memberships: {
+        Row: {
+          id: string
+          user_id: string
+          org_id: string
+          role_id: string
+          is_primary: boolean
+          joined_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          org_id: string
+          role_id: string
+          is_primary?: boolean
+          joined_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          org_id?: string
+          role_id?: string
+          is_primary?: boolean
+          joined_at?: string
+          created_at?: string
         }
       }
     }

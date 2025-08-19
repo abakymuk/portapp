@@ -16,7 +16,8 @@ tickets/
 │   ├── DB-001-core-schema.md
 │   ├── DB-002-materialized-views.md
 │   ├── DB-003-rls-policies.md
-│   └── DB-004-seeds.md
+│   ├── DB-004-seeds.md
+│   └── DB-005-users-schema.md
 ├── epic-ingest/                 # Инжест и нормализация
 │   ├── ING-001-edge-function.md
 │   ├── ING-002-normalize-staging.md
@@ -28,7 +29,10 @@ tickets/
 │   ├── UI-003-arrivals.md
 │   ├── UI-004-containers-search.md
 │   ├── UI-005-orders.md
-│   └── UI-006-sidebar.md
+│   ├── UI-006-sidebar.md
+│   ├── UI-007-user-auth.md
+│   ├── UI-008-user-profile.md
+│   └── UI-009-organization-management.md
 ├── epic-actions/                # Server Actions
 │   ├── ACT-001-create-order.md
 │   └── ACT-002-add-order-items.md
@@ -51,8 +55,8 @@ tickets/
 
 ## Созданные тикеты
 
-### ✅ Завершённые (30/30)
-- **ENV-001** - Bootstrap repo (🚧 В работе)
+### ✅ Завершённые (16/18)
+- **ENV-001** - Bootstrap repo
 - **ENV-002** - Next 15 app
 - **ENV-003** - Supabase setup
 - **ENV-004** - Env vars
@@ -60,30 +64,20 @@ tickets/
 - **DB-002** - Materialized views + RPC
 - **DB-003** - RLS policies
 - **DB-004** - Seeds
+- **DB-005** - Users schema
 - **UI-001** - Supabase clients
 - **UI-002** - Dashboard
 - **UI-003** - Arrivals list & details
 - **UI-004** - Containers search
 - **UI-005** - Orders list/new/detail
 - **UI-006** - Sidebar Navigation
-- **ING-001** - Edge function
-- **ING-002** - Normalize → stg
-- **ING-003** - Upsert core
-- **ING-004** - Metrics & errors
-- **ACT-001** - createOrder
-- **ACT-002** - addOrderItems (bulk)
-- **CRON-001** - Vercel Cron → refresh
-- **SEC-001** - Secrets hygiene
-- **SEC-002** - Read-only views
-- **OBS-001** - Log ingestion
-- **OBS-002** - No-data alert
-- **QA-001** - Unit: parsers
-- **QA-002** - E2E tests
-- **DOC-001** - README (✅ уже создан)
-- **DOC-002** - Operations (✅ уже создан)
-- **DOC-003** - Ingest docs (✅ уже создан)
 
-### 🎉 Все тикеты созданы! (30/30)
+### ⏳ В ожидании (2/18)
+- **UI-007** - User authentication
+- **UI-008** - User profile management
+- **UI-009** - Organization management
+
+### 🎯 Всего тикетов: 18
 
 ## Статусы тикетов
 

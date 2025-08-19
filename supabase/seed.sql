@@ -95,27 +95,44 @@ INSERT INTO container_events (container_id, event_type, event_time, payload) VAL
   ((SELECT id FROM containers WHERE cntr_no = 'HLC0123456'), 'picked_up', now() - interval '12 hours', '{"truck": "TRK-12345"}');
 
 -- 7. Демо заказы
-INSERT INTO orders (id, org_id, order_no, status, requested_pickup_at, note) VALUES 
+INSERT INTO orders (id, org_id, order_no, status, customer_name, customer_email, notes) VALUES 
   ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 
    '11111111-1111-1111-1111-111111111111', 
-   'DEMO-001', 'submitted', now() + interval '1 day', 'Demo order for testing'),
+   'ORD-2024-001', 'confirmed', 'Demo Logistics Inc', 'demo@logistics.com', 'Demo order for testing'),
    
   ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 
    '22222222-2222-2222-2222-222222222222', 
-   'TEST-001', 'draft', now() + interval '2 days', 'Test order for demo')
+   'ORD-2024-002', 'draft', 'Test Freight Co', 'test@freight.com', 'Test order for demo'),
+   
+  ('cccccccc-cccc-cccc-cccc-cccccccccccc', 
+   '33333333-3333-3333-3333-333333333333', 
+   'ORD-2024-003', 'in_progress', 'Sample Shipping Ltd', 'sample@shipping.com', 'Sample order for demonstration')
 ON CONFLICT (order_no) DO NOTHING;
 
 -- 8. Создание позиций заказов
-INSERT INTO order_items (order_id, cntr_no, container_id, bill_of_lading, service_type, status) VALUES 
-  ((SELECT id FROM orders WHERE order_no = 'DEMO-001'), 
-   'CMA8901234', 
-   (SELECT id FROM containers WHERE cntr_no = 'CMA8901234'),
-   'CMA890123456', 'pickup', 'ready'),
+INSERT INTO order_items (order_id, product_name, quantity, unit_price, total_price) VALUES 
+  ((SELECT id FROM orders WHERE order_no = 'ORD-2024-001'), 
+   'Контейнер 45G1', 2, 15000.00, 30000.00),
    
-  ((SELECT id FROM orders WHERE order_no = 'TEST-001'), 
-   'CMA7890123', 
-   (SELECT id FROM containers WHERE cntr_no = 'CMA7890123'),
-   'MSC123456789', 'pickup', 'planned');
+  ((SELECT id FROM orders WHERE order_no = 'ORD-2024-001'), 
+   'Услуги погрузки', 1, 5000.00, 5000.00),
+   
+  ((SELECT id FROM orders WHERE order_no = 'ORD-2024-002'), 
+   'Контейнер 45G1', 1, 15000.00, 15000.00),
+   
+  ((SELECT id FROM orders WHERE order_no = 'ORD-2024-003'), 
+   'Контейнер 45G1', 3, 15000.00, 45000.00),
+   
+  ((SELECT id FROM orders WHERE order_no = 'ORD-2024-003'), 
+   'Услуги доставки', 1, 8000.00, 8000.00);
 
--- 9. Обновление материализованных представлений
+-- 9. Тестовые роли пользователей
+INSERT INTO user_roles (name, description) VALUES 
+  ('admin', 'Администратор организации'),
+  ('manager', 'Менеджер'),
+  ('operator', 'Оператор'),
+  ('viewer', 'Просмотрщик')
+ON CONFLICT (name) DO NOTHING;
+
+-- 10. Обновление материализованных представлений
 SELECT refresh_all_mv();
