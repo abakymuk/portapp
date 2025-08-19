@@ -102,7 +102,7 @@ export function ArrivalsFilters({ searchParams }: ArrivalsFiltersProps) {
   };
 
   const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
-    if (key === 'terminal' || key === 'line') {
+    if (key === "terminal" || key === "line") {
       return value !== "all";
     }
     return value !== "";
