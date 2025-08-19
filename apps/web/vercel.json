@@ -5,24 +5,31 @@
     "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3anlzZnhkbGdtc3drY3FrZnJ1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTUzODIwNywiZXhwIjoyMDcxMTE0MjA3fQ.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU",
     "INGEST_SECRET": "47cd1707f5b003c702cc162886470974dd7faeff07c1966eea9e22bf846586db",
     "CRON_SECRET": "8d8f66a9ffd3f2ead01c5b859f58a266e8496224454360a05ff44ac51374ba05",
-    "DEFAULT_TZ": "America/Los_Angeles"
+    "DEFAULT_TZ": "America/Los_Angeles",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_bW9kZXJuLWxhYnJhZG9yLTcwLmNsZXJrLmFjY291bnRzLmRldiQ",
+    "CLERK_SECRET_KEY": "sk_test_5yQmuzKhpOcvvkCTorRrDitMIn91t6JvnbcpyHePPK",
+    "CLERK_WEBHOOK_SECRET": "whsec_clerk_webhook_secret_here",
+    "NEXT_PUBLIC_CLERK_SIGN_IN_URL": "/sign-in",
+    "NEXT_PUBLIC_CLERK_SIGN_UP_URL": "/sign-up",
+    "NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL": "/",
+    "NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL": "/"
   },
   "crons": [
     {
       "path": "/api/cron/refresh",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 6 * * *"
     },
     {
       "path": "/api/cron/normalize",
-      "schedule": "0 */2 * * *"
+      "schedule": "0 12 * * *"
     },
     {
       "path": "/api/cron/upsert",
-      "schedule": "0 */4 * * *"
+      "schedule": "0 18 * * *"
     },
     {
       "path": "/api/cron/health",
-      "schedule": "0 */12 * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }

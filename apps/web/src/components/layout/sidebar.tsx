@@ -10,6 +10,7 @@ import {
   Ship,
   Package,
   ShoppingCart,
+  User,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -35,6 +36,11 @@ const navigation = [
     title: "Заказы",
     href: "/orders",
     icon: ShoppingCart,
+  },
+  {
+    title: "Профиль",
+    href: "/profile",
+    icon: User,
   },
 ];
 

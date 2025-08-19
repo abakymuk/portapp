@@ -9,9 +9,17 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
+import type { Database } from "@/lib/types/database";
+
+type Container = Database["public"]["Tables"]["containers"]["Row"] & {
+  container_events?: any[];
+  size?: string;
+  type?: string;
+  weight_kg?: number;
+};
 
 interface ContainersListProps {
-  containers: any[];
+  containers: Container[];
 }
 
 export function ContainersList({ containers }: ContainersListProps) {
@@ -86,7 +94,7 @@ export function ContainersList({ containers }: ContainersListProps) {
                 <TableCell className="font-medium">
                   {container.cntr_no}
                 </TableCell>
-                <TableCell>{getSizeBadge(container.size)}</TableCell>
+                <TableCell>{getSizeBadge(container.size || "")}</TableCell>
                 <TableCell>{container.type}</TableCell>
                 <TableCell>
                   {getStatusBadge(container.last_known_status)}
