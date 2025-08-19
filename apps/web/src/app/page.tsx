@@ -4,15 +4,28 @@ import { UpcomingTable } from "@/components/dashboard/upcoming-table";
 import { DwellChart } from "@/components/dashboard/dwell-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 // Компонент заголовка
 function DashboardHeader() {
   return (
     <div className="flex flex-col space-y-2">
-      <h1 className="text-3xl font-bold tracking-tight">PortOps Dashboard</h1>
-      <p className="text-muted-foreground">
-        Мониторинг рейсов и контейнеров в порту
-      </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            PortOps Dashboard
+          </h1>
+          <p className="text-muted-foreground">
+            Мониторинг рейсов и контейнеров в порту
+          </p>
+        </div>
+        <div className="flex space-x-2">
+          <Button asChild variant="outline">
+            <Link href="/arrivals">Все рейсы</Link>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
