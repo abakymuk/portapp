@@ -5,6 +5,7 @@ import { clientEnv, serverEnv } from "@/lib/env";
 import { Sidebar } from "@/components/layout/sidebar";
 import { SidebarToggle } from "@/components/layout/sidebar-toggle";
 import { SidebarProvider } from "@/components/layout/sidebar-provider";
+import { UserMenu } from "@/components/layout/user-menu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({
               <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
                 <SidebarToggle />
                 <div className="flex-1" />
+                <UserMenu />
               </header>
 
               {/* Main content */}

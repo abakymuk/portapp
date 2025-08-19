@@ -198,6 +198,7 @@ export interface Database {
       user_profiles: {
         Row: {
           id: string
+          clerk_user_id: string
           first_name: string | null
           last_name: string | null
           phone: string | null
@@ -212,6 +213,7 @@ export interface Database {
         }
         Insert: {
           id: string
+          clerk_user_id: string
           first_name?: string | null
           last_name?: string | null
           phone?: string | null
@@ -226,6 +228,7 @@ export interface Database {
         }
         Update: {
           id?: string
+          clerk_user_id?: string
           first_name?: string | null
           last_name?: string | null
           phone?: string | null

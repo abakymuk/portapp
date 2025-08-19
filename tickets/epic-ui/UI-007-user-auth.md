@@ -1,4 +1,4 @@
-# UI-007 · User Authentication
+# UI-007 · User Authentication (Clerk)
 
 **Статус**: ⏳ Ожидает  
 **Milestone**: E  
@@ -7,191 +7,150 @@
 
 ## Описание
 
-Реализация системы аутентификации пользователей с формами входа, регистрации и управления сессиями.
+Реализация системы аутентификации пользователей с использованием Clerk - современного решения для аутентификации, авторизации и управления пользователями.
 
 ## Задачи
 
-- [ ] Создать страницу входа (`/auth/login`)
-- [ ] Создать страницу регистрации (`/auth/register`)
-- [ ] Создать страницу восстановления пароля (`/auth/reset`)
-- [ ] Добавить компонент UserMenu в header
-- [ ] Реализовать защищенные маршруты
-- [ ] Добавить middleware для проверки аутентификации
-- [ ] Создать хуки для работы с пользователями
-- [ ] Добавить уведомления об ошибках аутентификации
+- [ ] Установить и настроить Clerk
+- [ ] Создать Clerk Application в dashboard
+- [ ] Настроить переменные окружения для Clerk
+- [ ] Интегрировать Clerk в Next.js приложение
+- [ ] Создать компонент SignIn для входа
+- [ ] Создать компонент SignUp для регистрации
+- [ ] Добавить компонент UserButton в header
+- [ ] Настроить защищенные маршруты с Clerk
+- [ ] Создать middleware для Clerk
+- [ ] Интегрировать Clerk с Supabase для профилей
+- [ ] Настроить webhooks для синхронизации данных
 
 ## Критерии приёмки
 
-- [ ] Пользователи могут войти в систему
-- [ ] Пользователи могут зарегистрироваться
-- [ ] Пользователи могут восстановить пароль
-- [ ] Защищенные маршруты работают корректно
-- [ ] UserMenu отображает информацию о пользователе
-- [ ] Обработка ошибок аутентификации работает
-- [ ] Сессии сохраняются между перезагрузками
+- [ ] Clerk успешно интегрирован в приложение
+- [ ] Пользователи могут войти через Clerk SignIn
+- [ ] Пользователи могут зарегистрироваться через Clerk SignUp
+- [ ] UserButton отображает информацию о пользователе
+- [ ] Защищенные маршруты работают с Clerk middleware
+- [ ] Данные пользователей синхронизируются с Supabase
+- [ ] Webhooks настроены для автоматической синхронизации
+- [ ] Поддержка социальных провайдеров (Google, GitHub)
+- [ ] Двухфакторная аутентификация (2FA)
+- [ ] Управление сессиями и безопасность
 
 ## Технические детали
 
-### Страница входа
+### Установка Clerk
 
-Создать файл `apps/web/src/app/auth/login/page.tsx`:
+```bash
+# Установка Clerk
+pnpm add @clerk/nextjs
+
+# Установка дополнительных зависимостей
+pnpm add @clerk/themes
+```
+
+### Переменные окружения
+
+Обновить `.env.local`:
+
+```env
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_bW9kZXJuLWxhYnJhZG9yLTcwLmNsZXJrLmFjY291bnRzLmRldiQ
+CLERK_SECRET_KEY=sk_test_5yQmuzKhpOcvvkCTorRrDitMIn91t6JvnbcpyHePPK
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
+```
+
+### Интеграция Clerk в Next.js
+
+Обновить `apps/web/src/app/layout.tsx`:
 
 ```typescript
-import { LoginForm } from '@/components/auth/login-form'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { ClerkProvider } from '@clerk/nextjs'
+import { ruRU } from '@clerk/localizations'
 
-export default function LoginPage() {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ClerkProvider localization={ruRU}>
+      <html lang="ru">
+        <body>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
+  )
+}
+```
+
+### Страницы аутентификации
+
+Создать файл `apps/web/src/app/sign-in/[[...sign-in]]/page.tsx`:
+
+```typescript
+import { SignIn } from '@clerk/nextjs'
+
+export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/50">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-2">
-          <Button asChild variant="ghost" size="sm">
-            <Link href="/">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Назад
-            </Link>
-          </Button>
-          <h1 className="text-3xl font-bold">Вход в систему</h1>
-          <p className="text-muted-foreground">
-            Войдите в свой аккаунт для доступа к PortOps
-          </p>
-        </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Вход</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <LoginForm />
-          </CardContent>
-        </Card>
-
-        <div className="text-center space-y-2">
-          <p className="text-sm text-muted-foreground">
-            Нет аккаунта?{' '}
-            <Link href="/auth/register" className="text-primary hover:underline">
-              Зарегистрироваться
-            </Link>
-          </p>
-          <p className="text-sm text-muted-foreground">
-            <Link href="/auth/reset" className="text-primary hover:underline">
-              Забыли пароль?
-            </Link>
-          </p>
-        </div>
-      </div>
+      <SignIn 
+        appearance={{
+          elements: {
+            rootBox: "mx-auto",
+            card: "shadow-none"
+          }
+        }}
+      />
     </div>
   )
 }
 ```
 
-### Компонент формы входа
-
-Создать файл `apps/web/src/components/auth/login-form.tsx`:
+Создать файл `apps/web/src/app/sign-up/[[...sign-up]]/page.tsx`:
 
 ```typescript
-'use client'
+import { SignUp } from '@clerk/nextjs'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { createClient } from '@/lib/supabase/browser'
-import { Mail, Lock, Loader2 } from 'lucide-react'
-
-export function LoginForm() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    try {
-      const supabase = createClient()
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password
-      })
-
-      if (error) {
-        setError(error.message)
-        return
-      }
-
-      if (data.user) {
-        router.push('/')
-        router.refresh()
-      }
-    } catch (err) {
-      setError('Произошла ошибка при входе')
-    } finally {
-      setLoading(false)
-    }
-  }
-
+export default function SignUpPage() {
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && (
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+    <div className="min-h-screen flex items-center justify-center bg-muted/50">
+      <SignUp 
+        appearance={{
+          elements: {
+            rootBox: "mx-auto",
+            card: "shadow-none"
+          }
+        }}
+      />
+    </div>
+  )
+}
+```
 
-      <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="email"
-            type="email"
-            placeholder="your@email.com"
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className="pl-10"
-            required
-          />
-        </div>
-      </div>
+### Компонент UserButton
 
-      <div className="space-y-2">
-        <Label htmlFor="password">Пароль</Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            className="pl-10"
-            required
-          />
-        </div>
-      </div>
+Заменить `UserMenu` на `UserButton` в header:
 
-      <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? (
-          <>
-            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            Вход...
-          </>
-        ) : (
-          'Войти'
-        )}
-      </Button>
-    </form>
+```typescript
+import { UserButton } from '@clerk/nextjs'
+
+export function Header() {
+  return (
+    <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
+      <SidebarToggle />
+      <div className="flex-1" />
+      <UserButton 
+        appearance={{
+          elements: {
+            avatarBox: "h-8 w-8"
+          }
+        }}
+      />
+    </header>
   )
 }
 ```
@@ -353,16 +312,138 @@ export function UserMenu() {
 }
 ```
 
-### Хук для работы с пользователями
+### Middleware для Clerk
 
-Создать файл `apps/web/src/hooks/use-user.ts`:
+Создать файл `apps/web/src/middleware.ts`:
+
+```typescript
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware({
+  // Публичные маршруты
+  publicRoutes: [
+    "/",
+    "/sign-in",
+    "/sign-up",
+    "/api/webhooks/clerk",
+    "/api/webhooks/supabase"
+  ],
+  
+  // Игнорируемые маршруты
+  ignoredRoutes: [
+    "/api/webhooks/clerk",
+    "/api/webhooks/supabase"
+  ]
+});
+
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+```
+
+### Интеграция с Supabase
+
+Создать webhook для синхронизации данных:
+
+```typescript
+// apps/web/src/app/api/webhooks/clerk/route.ts
+import { Webhook } from 'svix'
+import { headers } from 'next/headers'
+import { WebhookEvent } from '@clerk/nextjs/server'
+import { createClient } from '@/lib/supabase/server'
+
+export async function POST(req: Request) {
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
+
+  if (!WEBHOOK_SECRET) {
+    throw new Error('Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env')
+  }
+
+  // Получаем заголовки
+  const headerPayload = headers();
+  const svix_id = headerPayload.get("svix-id");
+  const svix_timestamp = headerPayload.get("svix-timestamp");
+  const svix_signature = headerPayload.get("svix-signature");
+
+  if (!svix_id || !svix_timestamp || !svix_signature) {
+    return new Response('Error occured -- no svix headers', {
+      status: 400
+    })
+  }
+
+  // Получаем тело запроса
+  const payload = await req.json()
+  const body = JSON.stringify(payload);
+
+  // Создаем webhook
+  const wh = new Webhook(WEBHOOK_SECRET);
+
+  let evt: WebhookEvent
+
+  try {
+    evt = wh.verify(body, {
+      "svix-id": svix_id,
+      "svix-timestamp": svix_timestamp,
+      "svix-signature": svix_signature,
+    }) as WebhookEvent
+  } catch (err) {
+    console.error('Error verifying webhook:', err);
+    return new Response('Error occured', {
+      status: 400
+    })
+  }
+
+  const supabase = await createClient()
+
+  // Обрабатываем события
+  switch (evt.type) {
+    case 'user.created':
+      // Создаем профиль пользователя в Supabase
+      await supabase
+        .from('user_profiles')
+        .insert({
+          id: evt.data.id,
+          first_name: evt.data.first_name,
+          last_name: evt.data.last_name,
+          avatar_url: evt.data.image_url,
+        })
+      break;
+      
+    case 'user.updated':
+      // Обновляем профиль пользователя
+      await supabase
+        .from('user_profiles')
+        .update({
+          first_name: evt.data.first_name,
+          last_name: evt.data.last_name,
+          avatar_url: evt.data.image_url,
+        })
+        .eq('id', evt.data.id)
+      break;
+      
+    case 'user.deleted':
+      // Удаляем профиль пользователя
+      await supabase
+        .from('user_profiles')
+        .delete()
+        .eq('id', evt.data.id)
+      break;
+  }
+
+  return new Response('', { status: 200 })
+}
+```
+
+### Хук для работы с Clerk
+
+Создать файл `apps/web/src/hooks/use-clerk-user.ts`:
 
 ```typescript
 'use client'
 
+import { useUser } from '@clerk/nextjs'
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/browser'
-import type { User } from '@supabase/supabase-js'
 
 interface UserProfile {
   id: string
@@ -377,82 +458,63 @@ interface UserProfile {
   last_login_at: string | null
 }
 
-export function useUser() {
-  const [user, setUser] = useState<User | null>(null)
+export function useClerkUser() {
+  const { user, isLoaded } = useUser()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
 
   useEffect(() => {
-    // Получаем текущую сессию
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setUser(session?.user ?? null)
-      
-      if (session?.user) {
-        // Загружаем профиль пользователя
+    if (!isLoaded) return
+
+    if (user) {
+      // Загружаем профиль из Supabase
+      const loadProfile = async () => {
         const { data: profileData } = await supabase
           .from('user_profiles')
           .select('*')
-          .eq('id', session.user.id)
+          .eq('id', user.id)
           .single()
         
         setProfile(profileData)
-      }
-      
-      setLoading(false)
-    }
-
-    getSession()
-
-    // Слушаем изменения аутентификации
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null)
-        
-        if (session?.user) {
-          const { data: profileData } = await supabase
-            .from('user_profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single()
-          
-          setProfile(profileData)
-        } else {
-          setProfile(null)
-        }
-        
         setLoading(false)
       }
-    )
 
-    return () => subscription.unsubscribe()
-  }, [supabase.auth])
+      loadProfile()
+    } else {
+      setProfile(null)
+      setLoading(false)
+    }
+  }, [user, isLoaded, supabase])
 
-  return { user, profile, loading }
+  return { user, profile, loading, isLoaded }
 }
 ```
 
 ## Команды для выполнения
 
 ```bash
-# Создание компонентов
-mkdir -p apps/web/src/components/auth
-mkdir -p apps/web/src/app/auth
-mkdir -p apps/web/src/hooks
+# Установка Clerk
+cd apps/web
+pnpm add @clerk/nextjs @clerk/themes svix
+
+# Создание директорий
+mkdir -p src/app/sign-in/\[\[...sign-in\]\]
+mkdir -p src/app/sign-up/\[\[...sign-up\]\]
+mkdir -p src/app/api/webhooks/clerk
+mkdir -p src/hooks
 
 # Создание файлов
-touch apps/web/src/components/auth/login-form.tsx
-touch apps/web/src/components/auth/register-form.tsx
-touch apps/web/src/components/auth/reset-form.tsx
-touch apps/web/src/components/layout/user-menu.tsx
-touch apps/web/src/hooks/use-user.ts
-touch apps/web/src/app/auth/login/page.tsx
-touch apps/web/src/app/auth/register/page.tsx
-touch apps/web/src/app/auth/reset/page.tsx
+touch src/app/sign-in/\[\[...sign-in\]\]/page.tsx
+touch src/app/sign-up/\[\[...sign-up\]\]/page.tsx
+touch src/app/api/webhooks/clerk/route.ts
+touch src/hooks/use-clerk-user.ts
+touch src/middleware.ts
 
-# Установка зависимостей
-pnpm add @radix-ui/react-dropdown-menu @radix-ui/react-avatar
+# Настройка Clerk Dashboard
+# 1. Создать приложение на https://dashboard.clerk.com
+# 2. Получить ключи и добавить в .env.local
+# 3. Настроить webhooks для синхронизации с Supabase
 ```
 
 ## Тестирование
@@ -475,6 +537,7 @@ const testLogin = async () => {
 
 - **DB-005** - Users schema (должен быть завершён)
 - **UI-006** - Sidebar (должен быть завершён)
+- **Clerk Dashboard** - Создание приложения и настройка
 
 ## Следующие тикеты
 
@@ -483,8 +546,23 @@ const testLogin = async () => {
 
 ## Примечания
 
-- Использовать Supabase Auth для аутентификации
-- Добавить валидацию форм на клиенте
-- Реализовать обработку ошибок
-- Добавить loading состояния
-- Обеспечить безопасность маршрутов
+- Использовать Clerk для аутентификации и управления пользователями
+- Настроить webhooks для синхронизации данных с Supabase
+- Добавить поддержку социальных провайдеров (Google, GitHub)
+- Настроить двухфакторную аутентификацию
+- Использовать Clerk Dashboard для управления пользователями
+- Обеспечить безопасность через Clerk middleware
+
+## Результаты выполнения
+
+### ⏳ В процессе реализации
+- Миграция с Supabase Auth на Clerk
+- Настройка Clerk Dashboard
+- Интеграция Clerk с Next.js
+- Создание webhooks для синхронизации
+
+### 🔄 Планируемые изменения
+- Замена кастомных форм на Clerk компоненты
+- Обновление middleware для работы с Clerk
+- Интеграция UserButton вместо UserMenu
+- Настройка автоматической синхронизации данных

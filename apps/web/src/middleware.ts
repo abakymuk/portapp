@@ -27,8 +27,30 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Refresh session if expired - required for Server Components
-  await supabase.auth.getUser()
+  // Обновляем сессию пользователя
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Защищенные маршруты (требуют аутентификации)
+  const protectedRoutes = ['/profile', '/organizations', '/settings']
+  const isProtectedRoute = protectedRoutes.some(route => 
+    request.nextUrl.pathname.startsWith(route)
+  )
+
+  // Маршруты аутентификации (не должны быть доступны авторизованным пользователям)
+  const authRoutes = ['/auth/login', '/auth/register', '/auth/reset']
+  const isAuthRoute = authRoutes.some(route => 
+    request.nextUrl.pathname.startsWith(route)
+  )
+
+  // Если пользователь не авторизован и пытается получить доступ к защищенному маршруту
+  if (!user && isProtectedRoute) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
+  }
+
+  // Если пользователь авторизован и пытается получить доступ к страницам аутентификации
+  if (user && isAuthRoute) {
+    return NextResponse.redirect(new URL('/', request.url))
+  }
 
   return supabaseResponse
 }

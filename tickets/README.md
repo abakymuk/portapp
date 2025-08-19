@@ -64,7 +64,7 @@ tickets/
 - **DB-002** - Materialized views + RPC
 - **DB-003** - RLS policies
 - **DB-004** - Seeds
-- **DB-005** - Users schema
+- **DB-005** - Users schema (Clerk Integration)
 - **UI-001** - Supabase clients
 - **UI-002** - Dashboard
 - **UI-003** - Arrivals list & details
@@ -72,8 +72,10 @@ tickets/
 - **UI-005** - Orders list/new/detail
 - **UI-006** - Sidebar Navigation
 
-### ⏳ В ожидании (2/18)
-- **UI-007** - User authentication
+### 🔄 В процессе (1/18)
+- **UI-007** - User authentication (Clerk) ⚡
+
+### ⏳ В ожидании (1/18)
 - **UI-008** - User profile management
 - **UI-009** - Organization management
 
