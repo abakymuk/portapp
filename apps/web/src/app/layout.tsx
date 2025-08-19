@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { env } from "@/lib/env";
+import { clientEnv, serverEnv } from "@/lib/env";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 // Проверка переменных окружения на сервере
 if (typeof window === "undefined") {
   console.log("🚀 Server environment check:", {
-    SUPABASE_URL: env.SUPABASE_URL,
-    DEFAULT_TZ: env.DEFAULT_TZ,
-    NODE_ENV: env.NODE_ENV,
+    SUPABASE_URL: clientEnv.SUPABASE_URL,
+    DEFAULT_TZ: clientEnv.DEFAULT_TZ,
+    NODE_ENV: clientEnv.NODE_ENV,
     // Не логируем секреты!
   });
 }

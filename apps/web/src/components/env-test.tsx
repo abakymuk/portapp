@@ -1,6 +1,6 @@
 "use client";
 
-import { env } from "@/lib/env";
+import { clientEnv } from "@/lib/env";
 import {
   Card,
   CardContent,
@@ -27,27 +27,29 @@ export function EnvTest() {
           <div className="flex justify-between">
             <span className="font-medium">SUPABASE_URL:</span>
             <span className="text-muted-foreground">
-              {env.SUPABASE_URL ? "✅ Available" : "❌ Missing"}
+              {clientEnv.SUPABASE_URL ? "✅ Available" : "❌ Missing"}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">SUPABASE_ANON_KEY:</span>
             <span className="text-muted-foreground">
-              {env.SUPABASE_ANON_KEY ? "✅ Available" : "❌ Missing"}
+              {clientEnv.SUPABASE_ANON_KEY ? "✅ Available" : "❌ Missing"}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">DEFAULT_TZ:</span>
-            <span className="text-muted-foreground">{env.DEFAULT_TZ}</span>
+            <span className="text-muted-foreground">
+              {clientEnv.DEFAULT_TZ}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">NODE_ENV:</span>
-            <span className="text-muted-foreground">{env.NODE_ENV}</span>
+            <span className="text-muted-foreground">{clientEnv.NODE_ENV}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium">SERVICE_ROLE_KEY:</span>
             <span className="text-muted-foreground">
-              {env.SUPABASE_SERVICE_ROLE_KEY
+              {process.env.SUPABASE_SERVICE_ROLE_KEY
                 ? "⚠️ Exposed (Security Risk!)"
                 : "✅ Secure"}
             </span>
