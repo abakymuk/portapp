@@ -35,11 +35,11 @@ export async function ArrivalsList({ searchParams }: ArrivalsListProps) {
     query = query.lte("eta", searchParams.date_to);
   }
 
-  if (searchParams.terminal) {
+  if (searchParams.terminal && searchParams.terminal !== "all") {
     query = query.eq("terminal_id", searchParams.terminal);
   }
 
-  if (searchParams.line) {
+  if (searchParams.line && searchParams.line !== "all") {
     query = query.eq("line_id", searchParams.line);
   }
 

@@ -33,8 +33,8 @@ export function ArrivalsFilters({ searchParams }: ArrivalsFiltersProps) {
   const [filters, setFilters] = useState({
     date_from: searchParams.date_from || "",
     date_to: searchParams.date_to || "",
-    terminal: searchParams.terminal || "",
-    line: searchParams.line || "",
+    terminal: searchParams.terminal || "all",
+    line: searchParams.line || "all",
     search: searchParams.search || "",
   });
 
@@ -93,15 +93,20 @@ export function ArrivalsFilters({ searchParams }: ArrivalsFiltersProps) {
     const clearedFilters = {
       date_from: "",
       date_to: "",
-      terminal: "",
-      line: "",
+      terminal: "all",
+      line: "all",
       search: "",
     };
     setFilters(clearedFilters);
     updateFilters(clearedFilters);
   };
 
-  const hasActiveFilters = Object.values(filters).some((value) => value !== "");
+  const hasActiveFilters = Object.entries(filters).some(([key, value]) => {
+    if (key === 'terminal' || key === 'line') {
+      return value !== "all";
+    }
+    return value !== "";
+  });
 
   if (loading) {
     return <div>Загрузка фильтров...</div>;
@@ -158,7 +163,7 @@ export function ArrivalsFilters({ searchParams }: ArrivalsFiltersProps) {
               <SelectValue placeholder="Все терминалы" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Все терминалы</SelectItem>
+              <SelectItem value="all">Все терминалы</SelectItem>
               {terminals.map((terminal) => (
                 <SelectItem key={terminal.id} value={terminal.id}>
                   {terminal.name}
@@ -179,7 +184,7 @@ export function ArrivalsFilters({ searchParams }: ArrivalsFiltersProps) {
               <SelectValue placeholder="Все линии" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Все линии</SelectItem>
+              <SelectItem value="all">Все линии</SelectItem>
               {lines.map((line) => (
                 <SelectItem key={line.id} value={line.id}>
                   {line.name}
